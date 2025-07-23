@@ -16,6 +16,8 @@ repository 'https://github.com/AdamaStark-N7/stark_lockbox_v3'
 
 description 'A Vehicle Lockbox Script for Qbox & QBCore'
 
+ox_lib 'locale'
+
 shared_script {
     'config.lua',
     '@ox_lib/init.lua',
@@ -29,6 +31,10 @@ client_scripts {
 server_scripts {
     'bridge/server/**.lua',
     'server/*.lua'
+}
+
+files {
+    'locales/*.json',
 }
 
 dependency {
