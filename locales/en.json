@@ -1,5 +1,13 @@
 {
     "error": {
+        "unsupported_inventory_title": "Unsupported Inventory",
         "unsupported_inventory": "Your Inventory Script Is Not Currently Supported!"
+    },
+    "info": {
+        "vehicle_lockbox_menu_title": "Vehicle Lockbox",
+        "open_vehicle_lockbox_option_title": "Open Lockbox",
+        "close_vehicle_lockbox_option_title": "Close Lockbox",
+        "open_vehicle_lockbox_option_description": "Opens The Secured Vehicle Lockbox",
+        "close_vehicle_lockbox_option_description": "Closes The Secured Vehicle Lockbox"
     }
 }

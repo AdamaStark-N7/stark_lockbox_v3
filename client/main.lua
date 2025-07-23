@@ -63,7 +63,7 @@ if Config.Framework == 'qb' then
         else
             if Config.Notify == 'ox' then
                 lib.notify({
-                    title = 'Unsupported Inventory',
+                    title = locale('error.unsupported_inventory_title'),
                     description = locale('error.unsupported_inventory'),
                     duration = 5000,
                     position = 'center-right',
@@ -71,7 +71,7 @@ if Config.Framework == 'qb' then
                 })
             elseif Config.Notify == 'lation' then
                 exports.lation_ui:notify({
-                    title = 'Unsupported Inventory',
+                    title = locale('error.unsupported_inventory_title'),
                     message = locale('error.unsupported_inventory'),
                     type = 'error',
                     duration = '5000',
@@ -80,6 +80,70 @@ if Config.Framework == 'qb' then
             end
         end
     end
+
+    function openLockboxMenu()
+        if Config.MenuUI == 'ox' then
+            lib.registerContext({
+                id = 'vehicle_lockbox_menu',
+                title = locale('info.vehicle_lockbox_menu_title'),
+                canClose = true,
+                options = {
+                    {
+                        title = locale('info.open_vehicle_lockbox_option_title'),
+                        onSelect = function()
+                            openLockboxInventory()
+                        end,
+                        icon = 'fa-soild fa-lock-open', -- fa-solid fa-unlock
+                        iconColor = 'white',
+                        description = locale('info.open_vehicle_lockbox_option_description')
+                    },
+                    {
+                        title = locale('info.close_vehicle_lockbox_option_title'),
+                        onSelect = function()
+                            lib.hideContext()
+                        end,
+                        icon = 'fa-solid fa-lock',
+                        iconColor = 'white',
+                        description = locale('info.close_vehicle_lockbox_option_description')
+                    }
+                }
+            })
+
+            lib.showContext('vehicle_lockbox_menu')
+        elseif Config.MenuUI == 'lation' then
+            exports.lation_ui:registerMenu({
+                id = 'vehicle_lockbox_menu',
+                title = locale('info.vehicle_lockbox_menu_title'),
+                canClose = true,
+                position = 'offcenter-right',
+                options = {
+                    {
+                        title = locale('info.open_vehicle_lockbox_option_title'),
+                        icon = 'fa-soild fa-lock-open',
+                        iconColor = 'white',
+                        description = locale('info.open_vehicle_lockbox_option_description'),
+                        onSelect = function()
+                            openLockboxInventory()
+                        end
+                    },
+                    {
+                        title = locale('info.close_vehicle_lockbox_option_title'),
+                        icon = 'fa-solid fa-lock',
+                        iconColor = 'white',
+                        description = locale('info.close_vehicle_lockbox_option_description'),
+                        onSelect = function()
+                            exports.lation_ui:hideMenu()
+                        end
+                    }
+                }
+            })
+
+            exports.lation_ui:showMenu('vehicle_lockbox_menu')
+        end
+    end
+
+    RegisterNetEvent('stark_lockbox:client:OpenLockbox', function() end)
+
 end
 
 if Config.Framework == 'qbx' then

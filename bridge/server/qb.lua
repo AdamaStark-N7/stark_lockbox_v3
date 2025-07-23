@@ -42,5 +42,5 @@ lib.addCommand('lockbox', {
     help = 'Opens The Secured Vehicle Lockbox',
     restricted = false,
 }, function(source)
-    TriggerClientEvent('stark_lockbox:client:openLockBox', source)
+    TriggerClientEvent('stark_lockbox:client:OpenLockbox', source)
 end)
