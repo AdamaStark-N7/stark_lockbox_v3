@@ -21,7 +21,9 @@ I would like to thank the team at Community Ox for continuing on with Overextend
 ## Lation
 I would like to thank Lation for developing a clean and sophisticated UI interface for FiveM which I am proud to directly support in this resource.
 
-Lation's UI Interface Can Be Purchased Here On His Tebex! Link: [Lation Modern UI](https://lationscripts.com/product/modern-ui).
+Lation's UI interface can be purchased here from his Tebex!
+
+* Link: [Lation Modern UI](https://lationscripts.com/product/modern-ui).
 
 # Description
 Stark Lockbox is a resource that allows both LEO & EMS to utilize a locking storage in their vehicles that only they can acccess, keeping vital law enforcement or medical equipment safe from others while enhancing QOL and gameplay experience.
