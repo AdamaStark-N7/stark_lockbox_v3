@@ -3,7 +3,6 @@
 if not lib.checkDependency('ox_lib', '3.30.0', true) then return end
 
 if Config.Framework == 'qb' then
-
     local function addRadialLockboxOption()
         local Player = PlayerPedId()
         MenuItemId = exports['qb-radialmenu']:AddOption({
@@ -85,14 +84,14 @@ if Config.Framework == 'qb' then
             lib.registerContext({
                 id = 'vehicle_lockbox_menu',
                 title = locale('info.vehicle_lockbox_menu_title'),
-                canClose = true,
+                canClose = false,
                 options = {
                     {
                         title = locale('info.open_vehicle_lockbox_option_title'),
                         onSelect = function()
                             openLockboxInventory()
                         end,
-                        icon = 'fa-soild fa-lock-open', -- fa-solid fa-unlock
+                        icon = 'fa-solid fa-unlock',
                         iconColor = 'white',
                         description = locale('info.open_vehicle_lockbox_option_description')
                     },
@@ -109,17 +108,18 @@ if Config.Framework == 'qb' then
             })
 
             lib.showContext('vehicle_lockbox_menu')
+
         elseif Config.MenuUI == 'lation' then
             exports.lation_ui:registerMenu({
                 id = 'vehicle_lockbox_menu',
                 title = locale('info.vehicle_lockbox_menu_title'),
-                canClose = true,
+                canClose = false,
                 position = 'offcenter-right',
                 options = {
                     {
                         title = locale('info.open_vehicle_lockbox_option_title'),
-                        icon = 'fa-soild fa-lock-open',
-                        iconColor = 'white',
+                        icon = 'fas fa-lock-open',
+                        iconColor = '#FFFFFF',
                         description = locale('info.open_vehicle_lockbox_option_description'),
                         onSelect = function()
                             openLockboxInventory()
@@ -127,8 +127,8 @@ if Config.Framework == 'qb' then
                     },
                     {
                         title = locale('info.close_vehicle_lockbox_option_title'),
-                        icon = 'fa-solid fa-lock',
-                        iconColor = 'white',
+                        icon = 'fas fa-lock',
+                        iconColor = '#FFFFFF',
                         description = locale('info.close_vehicle_lockbox_option_description'),
                         onSelect = function()
                             exports.lation_ui:hideMenu()
@@ -150,6 +150,7 @@ if Config.Framework == 'qb' then
                 if qbCheckValidPoliceJob() or qbCheckValidAmbulanceJob() then
                     if Config.Progress.enabled then
                         if Config.Progress.type == 'ox' then
+
                             -- Customizable: lib.progressCircle() or lib.progressBar()
                             if lib.progressCircle({
                                     duration = Config.Progress.duration,
@@ -188,12 +189,14 @@ if Config.Framework == 'qb' then
                                     })
                                 end
                             end
+
                         elseif Config.Progress.type == 'lation' then
                             if exports.lation_ui:progressBar({
                                     label = locale('info.progress_label'),
                                     duration = Config.Progress.duration,
-                                    icon = '',
-                                    iconColor = 'white',
+                                    icon = 'fas fa-box-open',
+                                    iconColor = '#FFFFFF',
+                                    color = '#0000FF',
                                     -- steps = {}, -- FEATURE COMING SOON
                                     canCancel = true,
                                     useWhileDead = false,
