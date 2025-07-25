@@ -23,9 +23,9 @@ Config.LockboxWeight = 120000
 Config.PoliceJobs = {
     'police',
     'lssd',
-    'sast',
-    'bcso',
     'sasp',
+    'bcso',
+    'sast',
     -- add your server's police job here as found in qb-core/shared/jobs.lua or qbx_core/shared/jobs.lua
 }
 
