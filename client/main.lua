@@ -3,6 +3,8 @@
 if not lib.checkDependency('ox_lib', '3.30.0', true) then return end
 
 if Config.Framework == 'qb' then
+    local QBCore = exports['qb-core']:GetCoreObject()
+
     local function addRadialLockboxOption()
         local Player = PlayerPedId()
         if Config.Radial == 'qb' then
@@ -23,7 +25,9 @@ if Config.Framework == 'qb' then
                 keepOpen = false
             })
         else
-            if Config.Notify == 'ox' then
+            if Config.Notify == 'qb' then
+                QBCore.Functions.Notify(locale('error.unsupported_radial_menu_description'), 'error', 5000)
+            elseif Config.Notify == 'ox' then
                 lib.notify({
                     title = locale('error.unsupported_radial_menu_title'),
                     description = locale('error.unsupported_radial_menu_description'),
@@ -99,7 +103,9 @@ if Config.Framework == 'qb' then
             local ox_inventory = exports.ox_inventory
             ox_inventory:openInventory('stash', 'vehicle_lockbox')
         else
-            if Config.Notify == 'ox' then
+            if Config.Notify == 'qb' then
+                QBCore.Functions.Notify(locale('error.unsupported_inventory_description'), 'error', 5000)
+            elseif Config.Notify == 'ox' then
                 lib.notify({
                     title = locale('error.unsupported_inventory_title'),
                     description = locale('error.unsupported_inventory_description'),
@@ -177,6 +183,32 @@ if Config.Framework == 'qb' then
             })
 
             exports.lation_ui:showMenu('vehicle_lockbox_menu')
+        elseif Config.MenuUI == 'qb' then
+            local lockboxMenu = {
+                {
+                    header = locale('info.vehicle_lockbox_menu_title'),
+                    icon = 'fa-solid fa-lock',
+                    isMenuHeader = true
+                },
+                {
+                    header = locale('info.open_vehicle_lockbox_option_title'),
+                    txt = locale('info.open_vehicle_lockbox_option_description'),
+                    icon = 'fa-solid fa-lock-open',
+                    action = function()
+                        openLockboxInventory()
+                    end
+                },
+                {
+                    header = locale('info.close_vehicle_lockbox_option_title'),
+                    txt = locale('info.close_vehicle_lockbox_option_description'),
+                    icon = 'fa-solid fa-lock',
+                    action = function()
+                        exports['qb-menu']:closeMenu()
+                    end
+                }
+            }
+
+            exports['qb-menu']:openMenu(lockboxMenu)
         end
     end
 
