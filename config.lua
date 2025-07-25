@@ -2,11 +2,13 @@ Config = Config or {}
 
 Config.VersionCheck = true
 
-Config.Framework = 'qbx' -- supported: 'qb' or 'qbx'
+Config.Framework = 'qb' -- supported: 'qb' or 'qbx'
 
-Config.Notify = 'ox'     -- supported: 'ox' or 'lation'
+Config.Notify = 'ox'    -- supported: 'ox' or 'lation'
 
-Config.Inventory = 'ox'  -- supported: 'qb', 'ox', or 'ps'
+Config.Inventory = 'ps' -- supported: 'qb', 'ox', or 'ps'
+
+Config.Radial = 'ox'    -- supported: 'qb' or 'ox' -- TESTING CODE
 
 Config.Progress = {
     enabled = true,

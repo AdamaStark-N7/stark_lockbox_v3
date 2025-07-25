@@ -2,7 +2,10 @@
 
 if not lib.checkDependency('ox_lib', '3.30.0', true) then return end
 
+if not Config.Radial == 'qb' then return end -- TESTING CODE
+
 if Config.Framework == 'qb' then
+
     local function addRadialLockboxOption()
         local Player = PlayerPedId()
         MenuItemId = exports['qb-radialmenu']:AddOption({
