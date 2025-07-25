@@ -2,20 +2,45 @@
 
 if not lib.checkDependency('ox_lib', '3.30.0', true) then return end
 
-if not Config.Radial == 'qb' then return end -- TESTING CODE
-
 if Config.Framework == 'qb' then
-
     local function addRadialLockboxOption()
         local Player = PlayerPedId()
-        MenuItemId = exports['qb-radialmenu']:AddOption({
-            id = 'open_lock_box',
-            title = 'Open Lockbox',
-            icon = 'lock',
-            type = 'client',
-            event = 'stark_lockbox:client:OpenLockbox',
-            shouldClose = true,
-        }, MenuItemId)
+        if Config.Radial == 'qb' then
+            MenuItemId = exports['qb-radialmenu']:AddOption({
+                id = 'open_lock_box',
+                title = locale('info.radial_menu_title'),
+                icon = 'lock',
+                type = 'client',
+                event = 'stark_lockbox:client:OpenLockbox',
+                shouldClose = true,
+            }, MenuItemId)
+        elseif Config.Radial == 'ox' then
+            lib.addRadialItem({
+                id = 'open_lock_box',
+                icon = 'fa-solid fa-lock',
+                label = locale('info.radial_menu_title'),
+                onSelect = 'OpenLockbox',
+                keepOpen = false
+            })
+        else
+            if Config.Notify == 'ox' then
+                lib.notify({
+                    title = locale('error.unsupported_radial_menu_title'),
+                    description = locale('error.unsupported_radial_menu_description'),
+                    duration = 5000,
+                    position = 'center-right',
+                    type = 'error'
+                })
+            elseif Config.Notify == 'lation' then
+                exports.lation_ui:notify({
+                    title = locale('error.unsupported_radial_menu_title'),
+                    message = locale('error.unsupported_radial_menu_description'),
+                    type = 'error',
+                    duration = '5000',
+                    position = 'center-right'
+                })
+            end
+        end
     end
 
     local function updateRadial()
@@ -29,20 +54,32 @@ if Config.Framework == 'qb' then
                 elseif MenuItemId ~= nil then
                     exports['qb-radialmenu']:RemoveOption(MenuItemId)
                     MenuItemId = nil
+                elseif Config.Radial == 'ox' then
+                    lib.removeRadialItem('open_lock_box')
                 end
             elseif MenuItemId ~= nil then
                 exports['qb-radialmenu']:RemoveOption(MenuItemId)
                 MenuItemId = nil
+            elseif Config.Radial == 'ox' then
+                lib.removeRadialItem('open_lock_box')
             end
         elseif MenuItemId ~= nil then
             exports['qb-radialmenu']:RemoveOption(MenuItemId)
             MenuItemId = nil
+        elseif Config.Radial == 'ox' then
+            lib.removeRadialItem('open_lock_box')
         end
     end
 
     RegisterNetEvent('qb-radialmenu:client:onRadialmenuOpen', function()
         updateRadial()
     end)
+
+    if Config.Radial == 'ox' then
+        lib.onCache('vehicle', function()
+            updateRadial()
+        end)
+    end
 
     function openLockboxInventory()
         local Player = PlayerPedId()
@@ -65,7 +102,7 @@ if Config.Framework == 'qb' then
             if Config.Notify == 'ox' then
                 lib.notify({
                     title = locale('error.unsupported_inventory_title'),
-                    description = locale('error.unsupported_inventory'),
+                    description = locale('error.unsupported_inventory_description'),
                     duration = 5000,
                     position = 'center-right',
                     type = 'error'
@@ -73,7 +110,7 @@ if Config.Framework == 'qb' then
             elseif Config.Notify == 'lation' then
                 exports.lation_ui:notify({
                     title = locale('error.unsupported_inventory_title'),
-                    message = locale('error.unsupported_inventory'),
+                    message = locale('error.unsupported_inventory_description'),
                     type = 'error',
                     duration = '5000',
                     position = 'center-right'
@@ -111,7 +148,6 @@ if Config.Framework == 'qb' then
             })
 
             lib.showContext('vehicle_lockbox_menu')
-
         elseif Config.MenuUI == 'lation' then
             exports.lation_ui:registerMenu({
                 id = 'vehicle_lockbox_menu',
@@ -144,6 +180,14 @@ if Config.Framework == 'qb' then
         end
     end
 
+    function openLockbox()
+        if Config.EnableMenu then
+            openLockboxMenu()
+        else
+            openLockboxInventory()
+        end
+    end
+
     RegisterNetEvent('stark_lockbox:client:OpenLockbox', function()
         local Player = PlayerPedId()
         if IsPedInAnyVehicle(Player, false) then
@@ -153,7 +197,6 @@ if Config.Framework == 'qb' then
                 if qbCheckValidPoliceJob() or qbCheckValidAmbulanceJob() then
                     if Config.Progress.enabled then
                         if Config.Progress.type == 'ox' then
-
                             -- Customizable: lib.progressCircle() or lib.progressBar()
                             if lib.progressCircle({
                                     duration = Config.Progress.duration,
@@ -168,11 +211,7 @@ if Config.Framework == 'qb' then
                                         combat = true
                                     }
                                 }) then
-                                if Config.EnableMenu then
-                                    openLockboxMenu()
-                                else
-                                    openLockboxInventory()
-                                end
+                                openLockbox()
                             else
                                 if Config.Notify == 'ox' then
                                     lib.notify({
@@ -192,7 +231,6 @@ if Config.Framework == 'qb' then
                                     })
                                 end
                             end
-
                         elseif Config.Progress.type == 'lation' then
                             if exports.lation_ui:progressBar({
                                     label = locale('info.progress_label'),
@@ -211,11 +249,7 @@ if Config.Framework == 'qb' then
                                         mouse = false
                                     }
                                 }) then
-                                if Config.EnableMenu then
-                                    openLockboxMenu()
-                                else
-                                    openLockboxInventory()
-                                end
+                                openLockbox()
                             else
                                 if Config.Notify == 'ox' then
                                     lib.notify({
@@ -237,12 +271,7 @@ if Config.Framework == 'qb' then
                             end
                         end
                     else
-                        -- Progress Not Enabled
-                        if Config.EnableMenu then
-                            openLockboxMenu()
-                        else
-                            openLockboxInventory()
-                        end
+                        openLockbox()
                     end
                 else
                     -- Fails The Job Check
@@ -305,6 +334,155 @@ if Config.Framework == 'qb' then
             end
         end
     end)
+
+    if Config.Radial == 'ox' then
+        exports('OpenLockbox', function()
+            local Player = PlayerPedId()
+            if IsPedInAnyVehicle(Player, false) then
+                local Vehicle = GetVehiclePedIsIn(Player, false)
+                local VehicleType = GetVehicleClass(Vehicle)
+                if VehicleType == 18 then
+                    if qbCheckValidPoliceJob() or qbCheckValidAmbulanceJob() then
+                        if Config.Progress.enabled then
+                            if Config.Progress.type == 'ox' then
+                                -- Customizable: lib.progressCircle() or lib.progressBar()
+                                if lib.progressCircle({
+                                        duration = Config.Progress.duration,
+                                        position = 'bottom',
+                                        label = locale('info.progress_label'),
+                                        useWhileDead = false,
+                                        canCancel = true,
+                                        disable = {
+                                            move = true,
+                                            car = true,
+                                            mouse = false,
+                                            combat = true
+                                        }
+                                    }) then
+                                    openLockbox()
+                                else
+                                    if Config.Notify == 'ox' then
+                                        lib.notify({
+                                            title = locale('error.cancellation_title'),
+                                            description = locale('error.cancellation_description'),
+                                            duration = 5000,
+                                            position = 'center-right',
+                                            type = 'error'
+                                        })
+                                    elseif Config.Notify == 'lation' then
+                                        exports.lation_ui:notify({
+                                            title = locale('error.cancellation_title'),
+                                            message = locale('error.cancellation_description'),
+                                            type = 'error',
+                                            duration = 5000,
+                                            position = 'center-right',
+                                        })
+                                    end
+                                end
+                            elseif Config.Progress.type == 'lation' then
+                                if exports.lation_ui:progressBar({
+                                        label = locale('info.progress_label'),
+                                        duration = Config.Progress.duration,
+                                        icon = 'fas fa-box-open',
+                                        iconColor = '#FFFFFF',
+                                        color = '#0000FF',
+                                        -- steps = {}, -- FEATURE COMING SOON
+                                        canCancel = true,
+                                        useWhileDead = false,
+                                        disable = {
+                                            move = true,
+                                            sprint = true,
+                                            car = true,
+                                            combat = true,
+                                            mouse = false
+                                        }
+                                    }) then
+                                    openLockbox()
+                                else
+                                    if Config.Notify == 'ox' then
+                                        lib.notify({
+                                            title = locale('error.cancellation_title'),
+                                            description = locale('error.cancellation_description'),
+                                            duration = 5000,
+                                            position = 'center-right',
+                                            type = 'error'
+                                        })
+                                    elseif Config.Notify == 'lation' then
+                                        exports.lation_ui:notify({
+                                            title = locale('error.cancellation_title'),
+                                            message = locale('error.cancellation_description'),
+                                            type = 'error',
+                                            duration = 5000,
+                                            position = 'center-right',
+                                        })
+                                    end
+                                end
+                            end
+                        else
+                            openLockbox()
+                        end
+                    else
+                        -- Fails The Job Check
+                        if Config.Notify == 'ox' then
+                            lib.notify({
+                                title = locale('error.incorrect_job_title'),
+                                description = locale('error.incorrect_job_description'),
+                                duration = 5000,
+                                position = 'center-right',
+                                type = 'error'
+                            })
+                        elseif Config.Notify == 'lation' then
+                            exports.lation_ui:notify({
+                                title = locale('error.incorrect_job_title'),
+                                message = locale('error.incorrect_job_description'),
+                                type = 'error',
+                                duration = 5000,
+                                position = 'center-right'
+                            })
+                        end
+                    end
+                else
+                    -- Fails Emergency Vehicle Class Check
+                    if Config.Notify == 'ox' then
+                        lib.notify({
+                            title = locale('error.incorrect_vehicle_title'),
+                            description = locale('error.incorrect_vehicle_description'),
+                            duration = 5000,
+                            position = 'center-right',
+                            type = 'error'
+                        })
+                    elseif Config.Notify == 'lation' then
+                        exports.lation_ui:notify({
+                            title = locale('error.incorrect_vehicle_title'),
+                            message = locale('error.incorrect_vehicle_description'),
+                            type = 'error',
+                            duration = 5000,
+                            position = 'center-right'
+                        })
+                    end
+                end
+            else
+                -- Player Is Not In A Vehicle
+                if Config.Notify == 'ox' then
+                    lib.notify({
+                        title = locale('error.player_not_in_vehicle_title'),
+                        description = locale('error.player_not_in_vehicle_description'),
+                        duration = 5000,
+                        position = 'center-right',
+                        type = 'error'
+                    })
+                elseif Config.Notify == 'lation' then
+                    exports.lation_ui:notify({
+                        title = locale('error.player_not_in_vehicle_title'),
+                        message = locale('error.player_not_in_vehicle_description'),
+                        type = 'error',
+                        duration = 5000,
+                        position = 'center-right'
+                    })
+                end
+            end
+        end)
+    end
 end
 
 if Config.Framework == 'qbx' then

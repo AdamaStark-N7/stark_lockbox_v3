@@ -8,7 +8,7 @@ Config.Notify = 'ox'    -- supported: 'ox' or 'lation'
 
 Config.Inventory = 'ps' -- supported: 'qb', 'ox', or 'ps'
 
-Config.Radial = 'ox'    -- supported: 'qb' or 'ox' -- TESTING CODE
+Config.Radial = 'ox'    -- supported: 'qb' or 'ox'
 
 Config.Progress = {
     enabled = true,
