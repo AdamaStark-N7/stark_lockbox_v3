@@ -187,7 +187,7 @@ if Config.Framework == 'qb' then
             local lockboxMenu = {
                 {
                     header = locale('info.vehicle_lockbox_menu_title'),
-                    icon = 'fa-solid fa-lock',
+                    icon = 'fa-solid fa-car',
                     isMenuHeader = true
                 },
                 {
