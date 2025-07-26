@@ -607,10 +607,7 @@ if Config.Framework == 'qbx' then
             id = 'open_lock_box',
             icon = 'fa-solid fa-lock',
             label = locale('info.radial_menu_title'),
-            -- onSelect = '',
-            onSelect = function()
-                oxOpenLockboxMenu()
-            end,
+            onSelect = 'OpenLockbox',
             keepOpen = false
         })
     end
@@ -733,4 +730,5 @@ if Config.Framework == 'qbx' then
     end
 
     RegisterNetEvent('stark_lockbox:client:OpenLockbox', function() end)
+    exports('OpenLockbox', function() end)
 end
