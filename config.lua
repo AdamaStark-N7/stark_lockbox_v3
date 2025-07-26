@@ -16,6 +16,12 @@ Config.Progress = {
     duration = 2500
 }
 
+Config.qbxProgress = {
+    enabled = true,
+    type = 'ox_circle', -- supported: 'ox_bar', 'ox_circle', or 'lation'
+    duration = 2500
+}
+
 Config.LockboxSlots = 5
 
 Config.LockboxWeight = 120000
@@ -36,4 +42,4 @@ Config.AmbulanceJobs = {
 
 Config.EnableMenu = true
 
-Config.MenuUI = 'ox' -- supported: 'qb', 'ox' or 'lation'
+Config.MenuUI = 'ox' -- supported: 'qb', 'ox', or 'lation'
