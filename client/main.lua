@@ -673,7 +673,7 @@ if Config.Framework == 'qbx' then
                     {
                         title = locale('info.open_vehicle_lockbox_option_title'),
                         onSelect = function()
-                            openLockboxInventory()
+                            oxOpenLockboxInventory()
                         end,
                         icon = 'fa-solid fa-unlock',
                         iconColor = 'white',
@@ -705,7 +705,7 @@ if Config.Framework == 'qbx' then
                         iconColor = '#FFFFFF',
                         description = locale('info.open_vehicle_lockbox_option_description'),
                         onSelect = function()
-                            openLockboxInventory()
+                            oxOpenLockboxInventory()
                         end
                     },
                     {

@@ -1,4 +1,4 @@
-if GetResourceState('qbx_core') ~= 'started' or GetResourceState('qb-core') == 'started' then return end
+if GetResourceState('qbx_core') ~= 'started' then return end
 
 if not lib.checkDependency('ox_lib', '3.30.0', true) then return end
 

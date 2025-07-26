@@ -1,6 +1,6 @@
 ---@diagnostic disable: lowercase-global
 
-if GetResourceState('qbx_core') ~= 'started' or GetResourceState('qb-core') == 'started' then return end
+if GetResourceState('qbx_core') ~= 'started' then return end
 
 local QBX = exports.qbx_core
 
