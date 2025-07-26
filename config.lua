@@ -12,7 +12,7 @@ Config.Radial = 'ox'    -- supported: 'qb' or 'ox'
 
 Config.Progress = {
     enabled = true,
-    type = 'ox', -- supported: 'ox' or 'lation' -- Default: 'ox'
+    type = 'ox', -- supported: 'qb', 'ox' or 'lation'
     duration = 2500
 }
 

@@ -228,8 +228,38 @@ if Config.Framework == 'qb' then
             if VehicleType == 18 then
                 if qbCheckValidPoliceJob() or qbCheckValidAmbulanceJob() then
                     if Config.Progress.enabled then
-                        if Config.Progress.type == 'ox' then
-                            -- Customizable: lib.progressCircle() or lib.progressBar()
+                        if Config.Progress.type == 'qb' then
+                            QBCore.Functions.Progressbar(locale('info.progress_name'), locale('info.progress_label'),
+                                Config.Progress.duration, false,
+                                true, {
+                                    disableMovement = true,
+                                    disableCarMovement = true,
+                                    disableMouse = false,
+                                    disableCombat = true
+                                }, {}, {}, {}, function()
+                                    openLockbox()
+                                end, function()
+                                    if Config.Notify == 'qb' then
+                                        QBCore.Functions.Notify(locale('error.cancellation_description'), 'error', 5000)
+                                    elseif Config.Notify == 'ox' then
+                                        lib.notify({
+                                            title = locale('error.cancellation_title'),
+                                            description = locale('error.cancellation_description'),
+                                            duration = 5000,
+                                            position = 'center-right',
+                                            type = 'error'
+                                        })
+                                    elseif Config.Notify == 'lation' then
+                                        exports.lation_ui:notify({
+                                            title = locale('error.cancellation_title'),
+                                            message = locale('error.cancellation_description'),
+                                            type = 'error',
+                                            duration = 5000,
+                                            position = 'center-right',
+                                        })
+                                    end
+                                end)
+                        elseif Config.Progress.type == 'ox' then
                             if lib.progressCircle({
                                     duration = Config.Progress.duration,
                                     position = 'bottom',
@@ -245,7 +275,9 @@ if Config.Framework == 'qb' then
                                 }) then
                                 openLockbox()
                             else
-                                if Config.Notify == 'ox' then
+                                if Config.Notify == 'qb' then
+                                    QBCore.Functions.Notify(locale('error.cancellation_description'), 'error', 5000)
+                                elseif Config.Notify == 'ox' then
                                     lib.notify({
                                         title = locale('error.cancellation_title'),
                                         description = locale('error.cancellation_description'),
@@ -283,7 +315,9 @@ if Config.Framework == 'qb' then
                                 }) then
                                 openLockbox()
                             else
-                                if Config.Notify == 'ox' then
+                                if Config.Notify == 'qb' then
+                                    QBCore.Functions.Notify(locale('error.cancellation_description'), 'error', 5000)
+                                elseif Config.Notify == 'ox' then
                                     lib.notify({
                                         title = locale('error.cancellation_title'),
                                         description = locale('error.cancellation_description'),
@@ -303,11 +337,14 @@ if Config.Framework == 'qb' then
                             end
                         end
                     else
+                        -- Progress Not Enabled
                         openLockbox()
                     end
                 else
                     -- Fails The Job Check
-                    if Config.Notify == 'ox' then
+                    if Config.Notify == 'qb' then
+                        QBCore.Functions.Notify(locale('error.incorrect_job_description'), 'error', 5000)
+                    elseif Config.Notify == 'ox' then
                         lib.notify({
                             title = locale('error.incorrect_job_title'),
                             description = locale('error.incorrect_job_description'),
@@ -327,7 +364,9 @@ if Config.Framework == 'qb' then
                 end
             else
                 -- Fails Emergency Vehicle Class Check
-                if Config.Notify == 'ox' then
+                if Config.Notify == 'qb' then
+                    QBCore.Functions.Notify(locale('error.incorrect_vehicle_description'), 'error', 5000)
+                elseif Config.Notify == 'ox' then
                     lib.notify({
                         title = locale('error.incorrect_vehicle_title'),
                         description = locale('error.incorrect_vehicle_description'),
@@ -347,7 +386,9 @@ if Config.Framework == 'qb' then
             end
         else
             -- Player Is Not In A Vehicle
-            if Config.Notify == 'ox' then
+            if Config.Notify == 'qb' then
+                QBCore.Functions.Notify(locale('error.player_not_in_vehicle_description'), 'error', 5000)
+            elseif Config.Notify == 'ox' then
                 lib.notify({
                     title = locale('error.player_not_in_vehicle_title'),
                     description = locale('error.player_not_in_vehicle_description'),
@@ -376,8 +417,39 @@ if Config.Framework == 'qb' then
                 if VehicleType == 18 then
                     if qbCheckValidPoliceJob() or qbCheckValidAmbulanceJob() then
                         if Config.Progress.enabled then
-                            if Config.Progress.type == 'ox' then
-                                -- Customizable: lib.progressCircle() or lib.progressBar()
+                            if Config.Progress.type == 'qb' then
+                                QBCore.Functions.Progressbar(locale('info.progress_name'), locale('info.progress_label'),
+                                    Config.Progress.duration, false,
+                                    true, {
+                                        disableMovement = true,
+                                        disableCarMovement = true,
+                                        disableMouse = false,
+                                        disableCombat = true
+                                    }, {}, {}, {}, function()
+                                        openLockbox()
+                                    end, function()
+                                        if Config.Notify == 'qb' then
+                                            QBCore.Functions.Notify(locale('error.cancellation_description'), 'error',
+                                                5000)
+                                        elseif Config.Notify == 'ox' then
+                                            lib.notify({
+                                                title = locale('error.cancellation_title'),
+                                                description = locale('error.cancellation_description'),
+                                                duration = 5000,
+                                                position = 'center-right',
+                                                type = 'error'
+                                            })
+                                        elseif Config.Notify == 'lation' then
+                                            exports.lation_ui:notify({
+                                                title = locale('error.cancellation_title'),
+                                                message = locale('error.cancellation_description'),
+                                                type = 'error',
+                                                duration = 5000,
+                                                position = 'center-right',
+                                            })
+                                        end
+                                    end)
+                            elseif Config.Progress.type == 'ox' then
                                 if lib.progressCircle({
                                         duration = Config.Progress.duration,
                                         position = 'bottom',
@@ -393,7 +465,9 @@ if Config.Framework == 'qb' then
                                     }) then
                                     openLockbox()
                                 else
-                                    if Config.Notify == 'ox' then
+                                    if Config.Notify == 'qb' then
+                                        QBCore.Functions.Notify(locale('error.cancellation_description'), 'error', 5000)
+                                    elseif Config.Notify == 'ox' then
                                         lib.notify({
                                             title = locale('error.cancellation_title'),
                                             description = locale('error.cancellation_description'),
@@ -431,7 +505,9 @@ if Config.Framework == 'qb' then
                                     }) then
                                     openLockbox()
                                 else
-                                    if Config.Notify == 'ox' then
+                                    if Config.Notify == 'qb' then
+                                        QBCore.Functions.Notify(locale('error.cancellation_description'), 'error', 5000)
+                                    elseif Config.Notify == 'ox' then
                                         lib.notify({
                                             title = locale('error.cancellation_title'),
                                             description = locale('error.cancellation_description'),
@@ -451,11 +527,14 @@ if Config.Framework == 'qb' then
                                 end
                             end
                         else
+                            -- Progress Not Enabled
                             openLockbox()
                         end
                     else
                         -- Fails The Job Check
-                        if Config.Notify == 'ox' then
+                        if Config.Notify == 'qb' then
+                            QBCore.Functions.Notify(locale('error.incorrect_job_description'), 'error', 5000)
+                        elseif Config.Notify == 'ox' then
                             lib.notify({
                                 title = locale('error.incorrect_job_title'),
                                 description = locale('error.incorrect_job_description'),
@@ -475,7 +554,9 @@ if Config.Framework == 'qb' then
                     end
                 else
                     -- Fails Emergency Vehicle Class Check
-                    if Config.Notify == 'ox' then
+                    if Config.Notify == 'qb' then
+                        QBCore.Functions.Notify(locale('error.incorrect_vehicle_description'), 'error', 5000)
+                    elseif Config.Notify == 'ox' then
                         lib.notify({
                             title = locale('error.incorrect_vehicle_title'),
                             description = locale('error.incorrect_vehicle_description'),
@@ -495,7 +576,9 @@ if Config.Framework == 'qb' then
                 end
             else
                 -- Player Is Not In A Vehicle
-                if Config.Notify == 'ox' then
+                if Config.Notify == 'qb' then
+                    QBCore.Functions.Notify(locale('error.player_not_in_vehicle_description'), 'error', 5000)
+                elseif Config.Notify == 'ox' then
                     lib.notify({
                         title = locale('error.player_not_in_vehicle_title'),
                         description = locale('error.player_not_in_vehicle_description'),
