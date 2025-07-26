@@ -11,7 +11,9 @@
         "incorrect_vehicle_title": "Incorrect Vehicle Class",
         "incorrect_vehicle_description": "You Are Not In An Emergency Vehicle!",
         "player_not_in_vehicle_title": "Not In Vehicle",
-        "player_not_in_vehicle_description": "You Are Not In A Vehicle Currently!"
+        "player_not_in_vehicle_description": "You Are Not In A Vehicle Currently!",
+        "inventory_error_title": "Inventory Error",
+        "inventory_error_description": "Ox Inventory Was Not Started Correctly!"
     },
 
     "info": {

@@ -601,4 +601,136 @@ if Config.Framework == 'qb' then
 end
 
 if Config.Framework == 'qbx' then
+    local function oxAddRadialLockboxOption()
+        local Player = PlayerPedId()
+        lib.addRadialItem({
+            id = 'open_lock_box',
+            icon = 'fa-solid fa-lock',
+            label = locale('info.radial_menu_title'),
+            -- onSelect = '',
+            onSelect = function()
+                oxOpenLockboxMenu()
+            end,
+            keepOpen = false
+        })
+    end
+
+    local function oxUpdateRadial()
+        local Player = PlayerPedId()
+        if qbxCheckValidPoliceJob() or qbxCheckValidAmbulanceJob() then
+            if IsPedInAnyVehicle(Player, false) then
+                local Vehicle = GetVehiclePedIsIn(Player, false)
+                local VehicleType = GetVehicleClass(Vehicle)
+                if VehicleType == 18 then
+                    oxAddRadialLockboxOption()
+                else
+                    lib.removeRadialItem('open_lock_box')
+                end
+            else
+                lib.removeRadialItem('open_lock_box')
+            end
+        else
+            lib.removeRadialItem('open_lock_box')
+        end
+    end
+
+    lib.onCache('vehicle', function()
+        oxUpdateRadial()
+    end)
+
+    function oxOpenLockboxInventory()
+        if GetResourceState('ox_inventory') ~= 'started' or not GetCurrentResourceName() then
+            if Config.Notify == 'ox' then
+                lib.notify({
+                    title = locale('error.inventory_error_title'),
+                    description = locale('error.inventory_error_description'),
+                    duration = 5000,
+                    position = 'center-right',
+                    type = 'error'
+                })
+            elseif Config.Notify == 'lation' then
+                exports.lation_ui:notify({
+                    title = locale('error.inventory_error_title'),
+                    message = locale('error.inventory_error_description'),
+                    type = 'error',
+                    duration = 5000,
+                    position = 'center-right'
+                })
+            end
+        else
+            local ox_inventory = exports.ox_inventory
+            ox_inventory:openInventory('stash', 'vehicle_lockbox')
+        end
+    end
+
+    function oxOpenLockboxMenu()
+        if Config.MenuUI == 'ox' then
+            lib.registerContext({
+                id = 'vehicle_lockbox_menu',
+                title = locale('info.vehicle_lockbox_menu_title'),
+                canClose = false,
+                options = {
+                    {
+                        title = locale('info.open_vehicle_lockbox_option_title'),
+                        onSelect = function()
+                            openLockboxInventory()
+                        end,
+                        icon = 'fa-solid fa-unlock',
+                        iconColor = 'white',
+                        description = locale('info.open_vehicle_lockbox_option_description')
+                    },
+                    {
+                        title = locale('info.close_vehicle_lockbox_option_title'),
+                        onSelect = function()
+                            lib.hideContext()
+                        end,
+                        icon = 'fa-solid fa-lock',
+                        iconColor = 'white',
+                        description = locale('info.close_vehicle_lockbox_option_description')
+                    }
+                }
+            })
+
+            lib.showContext('vehicle_lockbox_menu')
+        elseif Config.MenuUI == 'lation' then
+            exports.lation_ui:registerMenu({
+                id = 'vehicle_lockbox_menu',
+                title = locale('info.vehicle_lockbox_menu_title'),
+                canClose = false,
+                position = 'offcenter-right',
+                options = {
+                    {
+                        title = locale('info.open_vehicle_lockbox_option_title'),
+                        icon = 'fas fa-lock-open',
+                        iconColor = '#FFFFFF',
+                        description = locale('info.open_vehicle_lockbox_option_description'),
+                        onSelect = function()
+                            openLockboxInventory()
+                        end
+                    },
+                    {
+                        title = locale('info.close_vehicle_lockbox_option_title'),
+                        icon = 'fas fa-lock',
+                        iconColor = '#FFFFFF',
+                        description = locale('info.close_vehicle_lockbox_option_description'),
+                        onSelect = function()
+                            exports.lation_ui:hideMenu()
+                        end
+                    }
+                }
+            })
+
+            exports.lation_ui:showMenu('vehicle_lockbox_menu')
+        end
+    end
+
+    function oxOpenLockbox()
+        if Config.EnableMenu then
+            oxOpenLockboxMenu()
+        else
+            oxOpenLockboxInventory()
+        end
+    end
+
+    RegisterNetEvent('stark_lockbox:client:OpenLockbox', function() end)
 end
